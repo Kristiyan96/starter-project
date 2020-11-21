@@ -1,0 +1,23 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+
+development:
+  <<: *default
+  database: bgmentor_development
+  username: bgmentor
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: <% if ENV['DOCKERIZED'] == 'true' %>database<% else %>'localhost'<% end %>
+
+test:
+  <<: *default
+  database: bgmentor_test
+
+production:
+  <<: *default
+  database: <%= ENV['POSTGRES_DB'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  host: database
